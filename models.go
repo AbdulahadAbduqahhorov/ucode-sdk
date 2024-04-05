@@ -91,6 +91,14 @@ type (
 		Count    int                      `json:"count"`
 		Response []map[string]interface{} `json:"response"`
 	}
+	// GetListAggregationClientApiResponse  This is get list aggregation response
+	GetListAggregationClientApiResponse struct {
+		Data struct {
+			Data struct {
+				Data []map[string]interface{} `json:"data"`
+			} `json:"data"`
+		} `json:"data"`
+	}
 
 	// ClientApiUpdateResponse This is single update api response >>>>> UPDATE
 	ClientApiUpdateResponse struct {

@@ -306,6 +306,34 @@ func (o *ObjectFunction) GetSingleSlim(arg *Argument) (ClientApiResponse, Respon
 
 	return getObject, response, nil
 }
+func (o *ObjectFunction) GetListAggregation(arg *Argument) (GetListAggregationClientApiResponse, Response, error) {
+	var (
+		response           Response
+		getListAggregation GetListAggregationClientApiResponse
+		url                = fmt.Sprintf("%s/v2/items/%s/aggregation", o.Cfg.BaseURL, arg.TableSlug)
+	)
+
+	var appId = o.Cfg.AppId
+	if arg.AppId != "" {
+		appId = arg.AppId
+	}
+
+	getListAggregationResponseInByte, err := DoRequest(url, "POST", arg.Request, appId)
+	if err != nil {
+		response.Data = map[string]interface{}{"description": string(getListAggregationResponseInByte), "message": "Can't sent request", "error": err.Error()}
+		response.Status = "error"
+		return GetListAggregationClientApiResponse{}, response, err
+	}
+
+	err = json.Unmarshal(getListAggregationResponseInByte, &getListAggregation)
+	if err != nil {
+		response.Data = map[string]interface{}{"description": string(getListAggregationResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Status = "error"
+		return GetListAggregationClientApiResponse{}, response, err
+	}
+
+	return getListAggregation, response, nil
+}
 
 func (o *ObjectFunction) Delete(arg *Argument) (Response, error) {
 	var (
