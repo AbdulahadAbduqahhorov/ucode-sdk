@@ -1,6 +1,6 @@
 module github.com/AbdulahadAbduqahhorov/ucode-sdk
 
-go 1.18
+go 1.8
 
 require (
 	github.com/spf13/cast v1.6.0

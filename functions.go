@@ -348,7 +348,7 @@ func (o *ObjectFunction) Delete(arg *Argument) (Response, error) {
 		appId = arg.AppId
 	}
 
-	_, err := DoRequest(url, "DELETE", nil, appId)
+	_, err := DoRequest(url, "DELETE", Request{Data: map[string]interface{}{}}, appId)
 	if err != nil {
 		response.Data = map[string]interface{}{"message": "Error while deleting object", "error": err.Error()}
 		response.Status = "error"
