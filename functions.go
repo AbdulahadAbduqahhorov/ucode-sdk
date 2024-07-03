@@ -334,6 +334,46 @@ func (o *ObjectFunction) GetListAggregation(arg *Argument) (GetListAggregationCl
 
 	return getListAggregation, response, nil
 }
+func (o *ObjectFunction) AppendManyToMany(arg *Argument) (Response, error) {
+	var (
+		response Response
+		url      = fmt.Sprintf("%s/v2/items/many-to-many?from-ofs=%t", o.Cfg.BaseURL, arg.DisableFaas)
+	)
+
+	var appId = o.Cfg.AppId
+	if arg.AppId != "" {
+		appId = arg.AppId
+	}
+
+	_, err := DoRequest(url, "PUT", arg.Request.Data, appId)
+	if err != nil {
+		response.Data = map[string]interface{}{"message": "Error while appending many-to-many object", "error": err.Error()}
+		response.Status = "error"
+		return response, err
+	}
+
+	return response, nil
+}
+func (o *ObjectFunction) DeleteManyToMany(arg *Argument) (Response, error) {
+	var (
+		response Response
+		url      = fmt.Sprintf("%s/v2/items/many-to-many?from-ofs=%t", o.Cfg.BaseURL, arg.DisableFaas)
+	)
+
+	var appId = o.Cfg.AppId
+	if arg.AppId != "" {
+		appId = arg.AppId
+	}
+
+	_, err := DoRequest(url, "DELETE", arg.Request.Data, appId)
+	if err != nil {
+		response.Data = map[string]interface{}{"message": "Error while deleting many-to-many object", "error": err.Error()}
+		response.Status = "error"
+		return response, err
+	}
+
+	return response, nil
+}
 
 func (o *ObjectFunction) Delete(arg *Argument) (Response, error) {
 	var (
