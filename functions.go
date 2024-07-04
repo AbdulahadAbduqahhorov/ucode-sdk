@@ -116,7 +116,7 @@ func (o *ObjectFunction) GetList(arg *Argument) (GetListClientApiResponse, Respo
 	var (
 		response      Response
 		getListObject GetListClientApiResponse
-		url           = fmt.Sprintf("%s/v1/object/get-list/%s?from-ofs=%t", o.Cfg.BaseURL, arg.TableSlug, arg.DisableFaas)
+		url           = fmt.Sprintf("%s/v2/object/get-list/%s?from-ofs=%t", o.Cfg.BaseURL, arg.TableSlug, arg.DisableFaas)
 		page, limit   int
 	)
 
