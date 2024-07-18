@@ -6,8 +6,11 @@ import (
 	"net/http"
 	httpUrl "net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 	"github.com/spf13/cast"
 	tgbotapiK "gopkg.in/telegram-bot-api.v4"
@@ -442,6 +445,31 @@ func (o *ObjectFunction) SendTelegram(text string) error {
 		resp.Body.Close()
 	}
 
+	return nil
+}
+func (o *ObjectFunction) SendTelegramV2(text string) error {
+
+	if !ContainsLike(Mode, text) {
+		text = fmt.Sprintf("%s >>> %s \n%s", o.Cfg.FunctionName, time.Now().Format(time.RFC3339), text)
+	}
+
+	bot, err := tgbotapi.NewBotAPI(o.Cfg.BotToken)
+	if err != nil {
+		return err
+	}
+
+	for _, e := range o.Cfg.AccountIds {
+		chatID, err := strconv.ParseInt(e, 10, 64)
+		if err != nil {
+			return err
+		}
+
+		msg := tgbotapi.NewMessage(chatID, text)
+		_, err = bot.Send(msg)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
