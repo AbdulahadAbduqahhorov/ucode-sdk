@@ -10,6 +10,7 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -195,4 +196,59 @@ func HashSHA256(data string) string {
 // verifySHA256 verifies if the input data matches the hashed data
 func VerifySHA256(data, hashedData string) bool {
 	return HashSHA256(data) == hashedData
+}
+
+// SpacefWithDigits formats a float64 into a human-readable string with specified decimal places.
+// Example: SpacefWithDigits(1234567.89, 1) returns "1 234 567.8"
+// Example: SpacefWithDigits(1234567.89, 4) returns "1 234 567.8900"
+func SpacefWithDigits(f float64, decimals int) string {
+	return stripTrailingDigits(Spacef(f), decimals)
+}
+
+// Spacef formats a float64 into a human-readable string.
+// It splits the number into integer and fractional parts, inserting spaces between groups of three digits in the integer part.
+// The fractional part is retained as is, without any formatting.
+// Negative numbers are prefixed with a minus sign.
+// Example: 1234567.89 becomes "1 234 567.89"
+func Spacef(v float64) string {
+	buf := &bytes.Buffer{}
+	if v < 0 {
+		buf.Write([]byte{'-'})
+		v = 0 - v
+	}
+
+	space := []byte{' '}
+
+	parts := strings.Split(strconv.FormatFloat(v, 'f', -1, 64), ".")
+	pos := 0
+	if len(parts[0])%3 != 0 {
+		pos += len(parts[0]) % 3
+		buf.WriteString(parts[0][:pos])
+		buf.Write(space)
+	}
+	for ; pos < len(parts[0]); pos += 3 {
+		buf.WriteString(parts[0][pos : pos+3])
+		buf.Write(space)
+	}
+	buf.Truncate(buf.Len() - 1)
+
+	if len(parts) > 1 {
+		buf.Write([]byte{'.'})
+		buf.WriteString(parts[1])
+	}
+	return buf.String()
+}
+
+func stripTrailingDigits(s string, digits int) string {
+	if i := strings.Index(s, "."); i >= 0 {
+		if digits <= 0 {
+			return s[:i]
+		}
+		i++
+		if i+digits >= len(s) {
+			return s
+		}
+		return s[:i+digits]
+	}
+	return s
 }

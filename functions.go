@@ -42,14 +42,14 @@ func (o *ObjectFunction) CreateObject(arg *Argument) (Datas, Response, error) {
 
 	createObjectResponseInByte, err := DoRequest(url, "POST", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(createObjectResponseInByte), "message": "Can't send request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(createObjectResponseInByte), "message": "Can't send request", "error": err.Error()}
 		response.Status = "error"
 		return Datas{}, response, err
 	}
 
 	err = json.Unmarshal(createObjectResponseInByte, &createdObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(createObjectResponseInByte), "message": "Error while unmarshalling create object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(createObjectResponseInByte), "message": "Error while unmarshalling create object", "error": err.Error()}
 		response.Status = "error"
 		return Datas{}, response, err
 	}
@@ -71,14 +71,14 @@ func (o *ObjectFunction) UpdateObject(arg *Argument) (ClientApiUpdateResponse, R
 
 	updateObjectResponseInByte, err := DoRequest(url, "PUT", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(updateObjectResponseInByte), "message": "Error while updating object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(updateObjectResponseInByte), "message": "Error while updating object", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiUpdateResponse{}, response, err
 	}
 
 	err = json.Unmarshal(updateObjectResponseInByte, &updateObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(updateObjectResponseInByte), "message": "Error while unmarshalling update object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(updateObjectResponseInByte), "message": "Error while unmarshalling update object", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiUpdateResponse{}, response, err
 	}
@@ -100,14 +100,14 @@ func (o *ObjectFunction) MultipleUpdate(arg *Argument) (ClientApiMultipleUpdateR
 
 	multipleUpdateObjectsResponseInByte, err := DoRequest(url, "PUT", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(multipleUpdateObjectsResponseInByte), "message": "Error while multiple updating objects", "error": err.Error()}
+		response.Data = map[string]any{"description": string(multipleUpdateObjectsResponseInByte), "message": "Error while multiple updating objects", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiMultipleUpdateResponse{}, response, err
 	}
 
 	err = json.Unmarshal(multipleUpdateObjectsResponseInByte, &multipleUpdateObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(multipleUpdateObjectsResponseInByte), "message": "Error while unmarshalling multiple update objects", "error": err.Error()}
+		response.Data = map[string]any{"description": string(multipleUpdateObjectsResponseInByte), "message": "Error while unmarshalling multiple update objects", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiMultipleUpdateResponse{}, response, err
 	}
@@ -149,14 +149,14 @@ func (o *ObjectFunction) GetList(arg *Argument) (GetListClientApiResponse, Respo
 
 	getListResponseInByte, err := DoRequest(url, "POST", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListResponseInByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListResponseInByte), "message": "Can't send request", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(getListResponseInByte, &getListObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
@@ -174,7 +174,7 @@ func (o *ObjectFunction) GetListSlim(arg *Argument) (GetListClientApiResponse, R
 
 	reqObject, err := json.Marshal(arg.Request.Data)
 	if err != nil {
-		response.Data = map[string]interface{}{"message": "Error while marshalling request getting list slim object", "error": err.Error()}
+		response.Data = map[string]any{"message": "Error while marshalling request getting list slim object", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
@@ -197,14 +197,14 @@ func (o *ObjectFunction) GetListSlim(arg *Argument) (GetListClientApiResponse, R
 
 	getListResponseInByte, err := DoRequest(url, "GET", nil, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListResponseInByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListResponseInByte), "message": "Can't sent request", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(getListResponseInByte, &listSlim)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
@@ -237,14 +237,14 @@ func (o *ObjectFunction) GetListAggregate(arg *Argument) (GetListClientApiRespon
 
 	getListAggregateResponseInByte, err := DoRequest(url, "POST", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListAggregateResponseInByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListAggregateResponseInByte), "message": "Can't sent request", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(getListAggregateResponseInByte, &getListAggregate)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListAggregateResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListAggregateResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
 		response.Status = "error"
 		return GetListClientApiResponse{}, response, err
 	}
@@ -266,14 +266,14 @@ func (o *ObjectFunction) GetSingle(arg *Argument) (ClientApiResponse, Response, 
 
 	resByte, err := DoRequest(url, "GET", nil, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(resByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(resByte), "message": "Can't sent request", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(resByte, &getObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(resByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(resByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiResponse{}, response, err
 	}
@@ -295,14 +295,14 @@ func (o *ObjectFunction) GetSingleSlim(arg *Argument) (ClientApiResponse, Respon
 
 	resByte, err := DoRequest(url, "GET", nil, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(resByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(resByte), "message": "Can't sent request", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(resByte, &getObject)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(resByte), "message": "Error while unmarshalling to object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(resByte), "message": "Error while unmarshalling to object", "error": err.Error()}
 		response.Status = "error"
 		return ClientApiResponse{}, response, err
 	}
@@ -323,14 +323,14 @@ func (o *ObjectFunction) GetListAggregation(arg *Argument) (GetListAggregationCl
 
 	getListAggregationResponseInByte, err := DoRequest(url, "POST", arg.Request, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListAggregationResponseInByte), "message": "Can't sent request", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListAggregationResponseInByte), "message": "Can't sent request", "error": err.Error()}
 		response.Status = "error"
 		return GetListAggregationClientApiResponse{}, response, err
 	}
 
 	err = json.Unmarshal(getListAggregationResponseInByte, &getListAggregation)
 	if err != nil {
-		response.Data = map[string]interface{}{"description": string(getListAggregationResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
+		response.Data = map[string]any{"description": string(getListAggregationResponseInByte), "message": "Error while unmarshalling get list object", "error": err.Error()}
 		response.Status = "error"
 		return GetListAggregationClientApiResponse{}, response, err
 	}
@@ -350,7 +350,7 @@ func (o *ObjectFunction) AppendManyToMany(arg *Argument) (Response, error) {
 
 	_, err := DoRequest(url, "PUT", arg.Request.Data, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"message": "Error while appending many-to-many object", "error": err.Error()}
+		response.Data = map[string]any{"message": "Error while appending many-to-many object", "error": err.Error()}
 		response.Status = "error"
 		return response, err
 	}
@@ -370,7 +370,7 @@ func (o *ObjectFunction) DeleteManyToMany(arg *Argument) (Response, error) {
 
 	_, err := DoRequest(url, "DELETE", arg.Request.Data, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"message": "Error while deleting many-to-many object", "error": err.Error()}
+		response.Data = map[string]any{"message": "Error while deleting many-to-many object", "error": err.Error()}
 		response.Status = "error"
 		return response, err
 	}
@@ -391,9 +391,9 @@ func (o *ObjectFunction) Delete(arg *Argument) (Response, error) {
 		appId = arg.AppId
 	}
 
-	_, err := DoRequest(url, "DELETE", Request{Data: map[string]interface{}{}}, appId)
+	_, err := DoRequest(url, "DELETE", Request{Data: map[string]any{}}, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"message": "Error while deleting object", "error": err.Error()}
+		response.Data = map[string]any{"message": "Error while deleting object", "error": err.Error()}
 		response.Status = "error"
 		return response, err
 	}
@@ -414,12 +414,40 @@ func (o *ObjectFunction) MultipleDelete(arg *Argument) (Response, error) {
 
 	_, err := DoRequest(url, "DELETE", arg.Request.Data, appId)
 	if err != nil {
-		response.Data = map[string]interface{}{"message": "Error while deleting objects", "error": err.Error()}
+		response.Data = map[string]any{"message": "Error while deleting objects", "error": err.Error()}
 		response.Status = "error"
 		return response, err
 	}
 
 	return response, nil
+}
+func (o *ObjectFunction) MultipleUpsert(arg *Argument) (ClientApiMultipleUpsertResponse, Response, error) {
+	var (
+		response            = Response{Status: "done"}
+		multipleUpsertItems = ClientApiMultipleUpsertResponse{}
+		url                 = fmt.Sprintf("%s/v2/items/%s/upsert-many?from-ofs=%t", o.Cfg.BaseURL, arg.TableSlug, arg.DisableFaas)
+	)
+
+	var appId = o.Cfg.AppId
+	if arg.AppId != "" {
+		appId = arg.AppId
+	}
+
+	multipleUpsertItemsResponseInByte, err := DoRequest(url, "POST", arg.UpsertRequest, appId)
+	if err != nil {
+		response.Data = map[string]any{"description": string(multipleUpsertItemsResponseInByte), "message": "Error while multiple upserting items", "error": err.Error()}
+		response.Status = "error"
+		return ClientApiMultipleUpsertResponse{}, response, err
+	}
+
+	err = json.Unmarshal(multipleUpsertItemsResponseInByte, &multipleUpsertItems)
+	if err != nil {
+		response.Data = map[string]any{"description": string(multipleUpsertItemsResponseInByte), "message": "Error while unmarshalling multiple upsert items", "error": err.Error()}
+		response.Status = "error"
+		return ClientApiMultipleUpsertResponse{}, response, err
+	}
+
+	return multipleUpsertItems, response, nil
 }
 
 func (o *ObjectFunction) SendTelegram(text string) error {

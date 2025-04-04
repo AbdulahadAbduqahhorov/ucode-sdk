@@ -27,13 +27,20 @@ type (
 	}
 
 	Argument struct {
-		AppId             string  `json:"app_id"`
-		TableSlug         string  `json:"table_slug"`
-		Request           Request `json:"request"`
-		DisableFaas       bool    `json:"disable_faas"`
-		BlockCached       bool    `json:"block_cached"`
-		BlockBuilder      bool    `json:"block_builder"`
-		BlockedLoginTable bool    `json:"blocked_login_table"`
+		AppId             string        `json:"app_id"`
+		TableSlug         string        `json:"table_slug"`
+		Request           Request       `json:"request"`
+		UpsertRequest     UpsertRequest `json:"upsert_request"`
+		DisableFaas       bool          `json:"disable_faas"`
+		BlockCached       bool          `json:"block_cached"`
+		BlockBuilder      bool          `json:"block_builder"`
+		BlockedLoginTable bool          `json:"blocked_login_table"`
+	}
+	UpsertRequest struct {
+		Data struct {
+			Objects   []map[string]interface{} `json:"objects"`
+			FieldSlug string                   `json:"field_slug"`
+		} `json:"data"`
 	}
 
 	Data struct {
@@ -120,7 +127,13 @@ type (
 			} `json:"data"`
 		} `json:"data"`
 	}
-
+	ClientApiMultipleUpsertResponse struct {
+		Status      string `json:"status"`
+		Description string `json:"description"`
+		Data        struct {
+			Data map[string]any `json:"data"`
+		} `json:"data"`
+	}
 	ResponseStatus struct {
 		Status string `json:"status"`
 	}
