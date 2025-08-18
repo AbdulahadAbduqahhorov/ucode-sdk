@@ -1,6 +1,7 @@
 package ucodesdk
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -10,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/messaging"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 	"github.com/spf13/cast"
@@ -523,7 +526,62 @@ func (o *ObjectFunction) SendTelegramFile(req []byte, filename string) error {
 
 	return nil
 }
+func (o *ObjectFunction) SendNotification(notification Notification) error {
 
+	app, err := firebase.NewApp(context.Background(), nil, o.Cfg.FirebaseConfig)
+	if err != nil {
+		return fmt.Errorf("error initializing app: %v", err)
+	}
+
+	client, err := app.Messaging(context.Background())
+	if err != nil {
+		return fmt.Errorf("error getting Messaging client: %v", err)
+	}
+
+	var message *messaging.Message
+
+	switch notification.PlatformType {
+	case "ANDROID":
+		message = &messaging.Message{
+			Token: notification.FcmToken,
+			Data: map[string]string{
+				"title": notification.Title,
+				"body":  notification.Body,
+			},
+			Android: &messaging.AndroidConfig{
+				Priority: "high",
+			},
+		}
+	case "IOS":
+		message = &messaging.Message{
+			Token: notification.FcmToken,
+			Notification: &messaging.Notification{
+				Title: notification.Title,
+				Body:  notification.Body,
+			},
+			APNS: &messaging.APNSConfig{
+				Payload: &messaging.APNSPayload{
+					Aps: &messaging.Aps{
+						Sound:            "default",
+						ContentAvailable: true,
+					},
+				},
+				Headers: map[string]string{
+					"apns-priority": "10",
+				},
+			},
+		}
+	default:
+		return fmt.Errorf("unsupported platform type: %v", notification.PlatformType)
+	}
+
+	_, err = client.Send(context.Background(), message)
+	if err != nil {
+		return fmt.Errorf("error sending notification: %v", err)
+	}
+
+	return nil
+}
 func (o *ObjectFunction) Config() *Config {
 	return o.Cfg
 }

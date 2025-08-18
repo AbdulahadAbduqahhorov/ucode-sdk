@@ -151,3 +151,10 @@ type (
 		ClientErrorMessage string
 	}
 )
+
+type Notification struct {
+	FcmToken     string
+	PlatformType string
+	Title        string
+	Body         string
+}
