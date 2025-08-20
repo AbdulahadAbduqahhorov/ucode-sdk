@@ -252,20 +252,3 @@ func stripTrailingDigits(s string, digits int) string {
 	}
 	return s
 }
-
-func GetPlatformType(platform []string, defaultValue string) string {
-	if len(platform) == 0 {
-		return defaultValue
-	}
-
-	switch platform[0] {
-	case "android":
-		return "ANDROID"
-	case "ios":
-		return "IOS"
-	case "web":
-		return "WEB"
-	default:
-		return defaultValue
-	}
-}

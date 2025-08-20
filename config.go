@@ -1,16 +1,12 @@
 package ucodesdk
 
-import (
-	"google.golang.org/api/option"
-)
-
 type Config struct {
 	AppId          string
 	BaseURL        string
 	BotToken       string
 	AccountIds     []string
 	FunctionName   string
-	FirebaseConfig option.ClientOption
+	FirebaseConfig string
 }
 
 func (cfg *Config) SetAppId(appId string) {

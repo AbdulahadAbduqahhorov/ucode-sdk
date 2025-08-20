@@ -14,6 +14,7 @@ import (
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"google.golang.org/api/option"
 
 	"github.com/spf13/cast"
 	tgbotapiK "gopkg.in/telegram-bot-api.v4"
@@ -526,9 +527,17 @@ func (o *ObjectFunction) SendTelegramFile(req []byte, filename string) error {
 
 	return nil
 }
+
+/*
+SendNotification sends a notification to a specific FCM token using Firebase Cloud Messaging.
+It supports both Android and iOS platforms.
+Platform type should be 'android' or 'ios'
+*/
 func (o *ObjectFunction) SendNotification(notification Notification) error {
 
-	app, err := firebase.NewApp(context.Background(), nil, o.Cfg.FirebaseConfig)
+	opt := option.WithCredentialsJSON([]byte(o.Cfg.FirebaseConfig))
+
+	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		return fmt.Errorf("error initializing app: %v", err)
 	}
@@ -541,7 +550,7 @@ func (o *ObjectFunction) SendNotification(notification Notification) error {
 	var message *messaging.Message
 
 	switch notification.PlatformType {
-	case "ANDROID":
+	case "android":
 		message = &messaging.Message{
 			Token: notification.FcmToken,
 			Data: map[string]string{
@@ -552,7 +561,7 @@ func (o *ObjectFunction) SendNotification(notification Notification) error {
 				Priority: "high",
 			},
 		}
-	case "IOS":
+	case "ios":
 		message = &messaging.Message{
 			Token: notification.FcmToken,
 			Notification: &messaging.Notification{
